@@ -8,6 +8,7 @@ import SignupScreen from './screens/SignupScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import { Colors } from './constants/styles';
 import AuthContextProvider, { AuthContext } from './store/auth-store';
+import IconButton from './components/ui/IconButton';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,10 @@ function AuthStack() {
 }
 
 function AuthenticatedStack() {
+  const { logout } = useContext(AuthContext);
+  const logoutHandler = () => {
+    logout();
+  };
   return (
     <Stack.Navigator
       screenOptions={{
@@ -35,13 +40,27 @@ function AuthenticatedStack() {
         contentStyle: { backgroundColor: Colors.primary100 },
       }}
     >
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{
+          headerRight: ({ tintColor }) => (
+            <IconButton
+              icon="exit"
+              size={24}
+              color={tintColor}
+              onPress={logoutHandler}
+            />
+          ),
+        }}
+      />
     </Stack.Navigator>
   );
 }
 
 function Navigation() {
   const { isAuthenticated } = useContext(AuthContext);
+
   return (
     <NavigationContainer>
       {isAuthenticated ? <AuthenticatedStack /> : <AuthStack />}
