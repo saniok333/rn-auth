@@ -9,20 +9,20 @@ function WelcomeScreen() {
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
-    // const fetchMessage = async () => {
-    //   const { data } = await axios.get(
-    //     `https://rn-exp-bknd-default-rtdb.firebaseio.com/message.json?auth=${token}`
-    //   );
-    //   setFetchedMessage(data);
-    // };
-    // fetchMessage();
-    axios
-      .get(
+    (async () => {
+      const { data } = await axios.get(
         `https://rn-exp-bknd-default-rtdb.firebaseio.com/message.json?auth=${token}`
-      )
-      .then((response) => {
-        setFetchedMessage(response.data);
-      });
+      );
+      setFetchedMessage(data);
+    })();
+
+    // axios
+    //   .get(
+    //     `https://rn-exp-bknd-default-rtdb.firebaseio.com/message.json?auth=${token}`
+    //   )
+    //   .then((response) => {
+    //     setFetchedMessage(response.data);
+    //   });
   }, [token]);
 
   return (
